@@ -5,9 +5,10 @@
       <div
         class="border-t-4 border-blue-600 overflow-hidden rounded shadow-lg bg-white"
       >
-        <h3 class="text-xl text-center mt-8 mb-8">Welcome back!</h3>
+        <h3 class="text-xl text-center mt-8 mb-8">Login</h3>
         <div class="px-4 mb-4">
           <input
+            v-model="state.email"
             type="text"
             placeholder="Email Address"
             class="border border-gray rounded w-full p-3"
@@ -15,6 +16,7 @@
         </div>
         <div class="px-4 mb-4">
           <input
+            v-model="state.password"
             type="text"
             placeholder="Password"
             class="border border-gray rounded w-full p-3"
@@ -23,6 +25,7 @@
         <div class="px-4 mb-4 flex">
           <div class="w-1/2">
             <input
+              v-model="state.isRememberMe"
               type="checkbox"
               class="align-middle cursor-pointer -mt-1"
               id="remember-me"
@@ -42,7 +45,6 @@
         <div class="px-4 mb-6">
           <button
             class="border border-blue-500 bg-blue-600 rounded w-full px-4 py-3 text-white font-semibold"
-            @click="handleSubmit"
           >
             Sign in
           </button>
@@ -56,6 +58,10 @@
   </div>
 </template>
 
-<script>
-export default {};
+<script lang="ts" setup>
+const { state } = useLoginStore();
+
+onMounted(() => {
+  console.log(state);
+});
 </script>
