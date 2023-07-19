@@ -49,6 +49,15 @@
             Sign in
           </button>
         </div>
+
+        <div class="px-4 mb-6">
+          <button
+            class="border border-blue-500 bg-blue-600 rounded w-full px-4 py-3 text-white font-semibold"
+            @click="onGetUser"
+          >
+            Get User
+          </button>
+        </div>
         <div class="bg-gray-100 text-center text-gray-700 py-5">
           Don't have a account?
           <a href="#" class="font-semibold no-underline text-black">Signup</a>
@@ -59,9 +68,13 @@
 </template>
 
 <script lang="ts" setup>
-const { state } = useLoginStore();
+const { state, onLogin } = useLoginStore();
 
 onMounted(() => {
-  console.log(state);
+  // console.log(state);
 });
+
+const onGetUser = async () => {
+  await onLogin();
+};
 </script>

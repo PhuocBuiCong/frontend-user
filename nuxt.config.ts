@@ -22,4 +22,10 @@ export default defineNuxtConfig({
   imports: {
     dirs: ["stores"],
   },
+  runtimeConfig: {
+    public: {
+      apiBase: "", // can be overridden by NUXT_PUBLIC_API_BASE environment variable (.env file)
+      apiTimeout: 30000,
+    },
+  },
 });
