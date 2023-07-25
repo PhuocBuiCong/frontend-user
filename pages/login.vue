@@ -45,6 +45,7 @@
         <div class="px-4 mb-6">
           <button
             class="border border-blue-500 bg-blue-600 rounded w-full px-4 py-3 text-white font-semibold"
+            @click="handleLogin"
           >
             Sign in
           </button>
@@ -68,13 +69,15 @@
 </template>
 
 <script lang="ts" setup>
-const { state, onLogin } = useLoginStore();
+const { state, onLogin, getUser } = useLoginStore();
 
 onMounted(() => {
   // console.log(state);
 });
-
+const handleLogin = () => {
+  onLogin();
+};
 const onGetUser = async () => {
-  await onLogin();
+  await getUser();
 };
 </script>

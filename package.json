@@ -20,8 +20,9 @@
     "@vuelidate/validators": "^2.0.3",
     "axios": "^1.4.0",
     "lodash": "^4.17.21",
-    "sass": "^1.62.0",
     "pinia": "^2.1.4",
-    "vue": "^3.2.45"
+    "sass": "^1.62.0",
+    "vue": "^3.2.45",
+    "vue-cookies": "^1.8.3"
   }
 }

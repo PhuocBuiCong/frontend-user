@@ -7,7 +7,6 @@ declare module "nuxt/dist/app/nuxt" {
 
 export default defineNuxtPlugin(({ $pinia }) => {
   const runtimeConfig = useRuntimeConfig();
-  console.log(runtimeConfig.public.apiBase);
   const instance = axios.create({
     baseURL: runtimeConfig.public.apiBase,
     timeout: Number(runtimeConfig.public.apiTimeout),
@@ -21,10 +20,12 @@ export default defineNuxtPlugin(({ $pinia }) => {
   // Add a request interceptor
   instance.interceptors.request.use(
     function (config) {
-      console.log("trc khi request");
-    
-      // get access token from local storage
-    //   config.headers['X-Token'] = 
+      if (config.url?.includes("/login") || config.url?.includes("/refresh")) {
+        return config;
+      }
+      const token = localStorage.getItem("token") || "";
+      console.log("trc khi request", token);
+      config.headers["X-Token"] = token;
       // Do something before request is sent
       return config;
     },
@@ -36,16 +37,22 @@ export default defineNuxtPlugin(({ $pinia }) => {
 
   // Add a response interceptor
   instance.interceptors.response.use(
-    function (response) {
+    async function (response) {
       // Do something with response data
-      console.log("Sau khi server response", response.data);
       const config = response.config;
       if (config.url?.includes("/login") || config.url?.includes("/refresh")) {
         return response;
       }
-      const { code } = response.data;
+      const { code, msg } = response.data;
       if (code && code === 401) {
-        console.log("token expried");
+        if (msg && msg === "jwt expired") {
+          console.log("Th token het han ", msg);
+          // step1: get token from call api refreshToken
+          const { accessToken } = await refreshToken();
+          config.headers["X-Token"] = accessToken;
+          localStorage.setItem("token", accessToken);
+          return instance(config);
+        }
       }
       return response;
     },
@@ -55,6 +62,11 @@ export default defineNuxtPlugin(({ $pinia }) => {
       return Promise.reject(error);
     }
   );
+
+  async function refreshToken() {
+    const refreshToken = localStorage.getItem("refresh") || "";
+    return (await instance.post("refresh", { refreshToken })).data;
+  }
 
   return {
     provide: {
