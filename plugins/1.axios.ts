@@ -26,11 +26,9 @@ export default defineNuxtPlugin(({ $pinia }) => {
       const token = localStorage.getItem("token") || "";
       console.log("trc khi request", token);
       config.headers["X-Token"] = token;
-      // Do something before request is sent
       return config;
     },
     function (error) {
-      // Do something with request error
       return Promise.reject(error);
     }
   );
@@ -49,7 +47,9 @@ export default defineNuxtPlugin(({ $pinia }) => {
           console.log("Th token het han ", msg);
           // step1: get token from call api refreshToken
           const { accessToken } = await refreshToken();
+          //step2: assign token in header
           config.headers["X-Token"] = accessToken;
+          //step3: reset to localstorage
           localStorage.setItem("token", accessToken);
           return instance(config);
         }

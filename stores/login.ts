@@ -1,12 +1,39 @@
 import { reactive } from "vue";
-
+import { required, helpers } from "@vuelidate/validators";
+import { emailValidate } from "../utils/constant/validate";
 export const useLoginStore = defineStore("login", () => {
   const { $axios } = useNuxtApp();
   const state = reactive({
     email: "",
     password: "",
     isRememberMe: false,
+    hasErrors: {
+      email: "",
+      password: "",
+    },
+    errorMessage: "",
   });
+
+  const rules = {
+    email: {
+      required: helpers.withMessage(
+        "Email is required, please enter",
+        required
+      ),
+      emailRegex: helpers.withMessage("Wrong Email format", emailValidate),
+    },
+    password: {
+      required: helpers.withMessage(
+        "Pasword is required, please enter",
+        required
+      ),
+    },
+  };
+
+  const { checkField, $v, checkAllField, isValidForm } = useValidate(
+    rules,
+    state
+  );
 
   const onLogin = async () => {
     try {
@@ -25,18 +52,6 @@ export const useLoginStore = defineStore("login", () => {
     }
   };
 
-  const refreshToken = async () => {
-    try {
-      const refreshToken = localStorage.getItem("refresh") || "";
-      const payload = {
-        refreshToken,
-      };
-      const { data } = await $axios.post("/refresh", payload);
-      console.log(data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
   const getUser = async () => {
     try {
       const data = await $axios.get("/user");
@@ -46,7 +61,15 @@ export const useLoginStore = defineStore("login", () => {
     }
   };
 
-  return { state, onLogin, getUser, refreshToken };
+  return {
+    state,
+    onLogin,
+    getUser,
+    checkField,
+    $v,
+    checkAllField,
+    isValidForm,
+  };
 });
 
 export default useLoginStore;

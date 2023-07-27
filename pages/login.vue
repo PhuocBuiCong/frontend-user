@@ -7,25 +7,35 @@
       >
         <h3 class="text-xl text-center mt-8 mb-8">Login</h3>
         <div class="px-4 mb-4">
+          <label class="font-bold text-base text-black">Email</label>
           <input
-            v-model="state.email"
+            v-model="loginStore.state.email"
             type="text"
             placeholder="Email Address"
             class="border border-gray rounded w-full p-3"
+            @focusout="loginStore.checkField('email')"
           />
+          <p v-if="loginStore.state.hasErrors.email" class="text-red-500">
+            {{ loginStore.state.hasErrors.email }}
+          </p>
         </div>
         <div class="px-4 mb-4">
+          <label class="font-bold text-base text-black">Password</label>
           <input
-            v-model="state.password"
+            v-model="loginStore.state.password"
             type="text"
             placeholder="Password"
             class="border border-gray rounded w-full p-3"
+            @focusout="loginStore.checkField('password')"
           />
+          <p v-if="loginStore.state.hasErrors.password" class="text-red-500">
+            {{ loginStore.state.hasErrors.password }}
+          </p>
         </div>
         <div class="px-4 mb-4 flex">
           <div class="w-1/2">
             <input
-              v-model="state.isRememberMe"
+              v-model="loginStore.state.isRememberMe"
               type="checkbox"
               class="align-middle cursor-pointer -mt-1"
               id="remember-me"
@@ -44,21 +54,18 @@
         </div>
         <div class="px-4 mb-6">
           <button
-            class="border border-blue-500 bg-blue-600 rounded w-full px-4 py-3 text-white font-semibold"
+            class="border w-full px-4 py-3 text-white font-semibold rounded"
+            :class="
+              loginStore.isValidForm
+                ? 'border-blue-500 bg-blue-600'
+                : 'bg-gray-400'
+            "
             @click="handleLogin"
           >
             Sign in
           </button>
         </div>
 
-        <div class="px-4 mb-6">
-          <button
-            class="border border-blue-500 bg-blue-600 rounded w-full px-4 py-3 text-white font-semibold"
-            @click="onGetUser"
-          >
-            Get User
-          </button>
-        </div>
         <div class="bg-gray-100 text-center text-gray-700 py-5">
           Don't have a account?
           <a href="#" class="font-semibold no-underline text-black">Signup</a>
@@ -69,15 +76,15 @@
 </template>
 
 <script lang="ts" setup>
-const { state, onLogin, getUser } = useLoginStore();
+const loginStore = useLoginStore();
 
 onMounted(() => {
   // console.log(state);
 });
 const handleLogin = () => {
-  onLogin();
+  loginStore.onLogin();
 };
 const onGetUser = async () => {
-  await getUser();
+  await loginStore.getUser();
 };
 </script>

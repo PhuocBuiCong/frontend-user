@@ -849,6 +849,11 @@
   dependencies:
     "@types/node" "*"
 
+"@types/lodash@^4.14.196":
+  "integrity" "sha512-22y3o88f4a94mKljsZcanlNWPzO0uBsBdzLAngf2tp533LzZcQzb6+eZPJ+vCTt+bqF2XnvT9gejTLsAcJAJyQ=="
+  "resolved" "https://registry.npmjs.org/@types/lodash/-/lodash-4.14.196.tgz"
+  "version" "4.14.196"
+
 "@types/node@*":
   "integrity" "sha512-Dd0BYtWgnWJKwO1jkmTrzofjK2QXXcai0dmtzvIBhcA+RsG5h8R3xlyta0kGOZRNfL9GuRtb1knmPEhQrePCEw=="
   "resolved" "https://registry.npmjs.org/@types/node/-/node-20.4.2.tgz"
