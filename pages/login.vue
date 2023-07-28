@@ -68,7 +68,9 @@
 
         <div class="bg-gray-100 text-center text-gray-700 py-5">
           Don't have a account?
-          <a href="#" class="font-semibold no-underline text-black">Signup</a>
+          <NuxtLink to="/signup" class="font-semibold no-underline text-black"
+            >Signup
+          </NuxtLink>
         </div>
       </div>
     </div>
@@ -79,7 +81,7 @@
 const loginStore = useLoginStore();
 
 onMounted(() => {
-  // console.log(state);
+  loginStore.resetStateToDefault();
 });
 const handleLogin = () => {
   loginStore.onLogin();

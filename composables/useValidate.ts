@@ -10,8 +10,9 @@ export const useValidate = (rules: any, state: any) => {
     const formKeys = Object.keys(rules);
     if (formKeys.includes(name)) {
       await $v.value[name].$validate();
+
       if (!isEmpty($v.value[name].$errors)) {
-        state.hasErrors[name] = $v.value.$errors[0].$message;
+        state.hasErrors[name] = $v.value[name].$errors[0].$message;
       } else {
         state.hasErrors[name] = "";
       }
@@ -37,6 +38,6 @@ export const useValidate = (rules: any, state: any) => {
       isValidForm.value = !$v.value.$invalid;
     }
   );
-
+  console.log($v);
   return { checkField, checkAllField, $v, isValidForm };
 };

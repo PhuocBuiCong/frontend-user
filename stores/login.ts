@@ -1,17 +1,23 @@
 import { reactive } from "vue";
 import { required, helpers } from "@vuelidate/validators";
 import { emailValidate } from "../utils/constant/validate";
-export const useLoginStore = defineStore("login", () => {
-  const { $axios } = useNuxtApp();
-  const state = reactive({
+import { LoginState } from "../utils/types/state/login";
+import _ from "lodash";
+
+const defaultState = {
+  email: "",
+  password: "",
+  isRememberMe: false,
+  hasErrors: {
     email: "",
     password: "",
-    isRememberMe: false,
-    hasErrors: {
-      email: "",
-      password: "",
-    },
-    errorMessage: "",
+  },
+  errorMessage: "",
+};
+export const useLoginStore = defineStore("login", () => {
+  const { $axios } = useNuxtApp();
+  const state = reactive<LoginState>({
+    ..._.cloneDeep(defaultState),
   });
 
   const rules = {
@@ -61,6 +67,9 @@ export const useLoginStore = defineStore("login", () => {
     }
   };
 
+  const resetStateToDefault = () => {
+    Object.assign(state, _.cloneDeep(defaultState));
+  };
   return {
     state,
     onLogin,
@@ -69,6 +78,7 @@ export const useLoginStore = defineStore("login", () => {
     $v,
     checkAllField,
     isValidForm,
+    resetStateToDefault,
   };
 });
 
