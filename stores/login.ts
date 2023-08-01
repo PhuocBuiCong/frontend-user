@@ -13,74 +13,86 @@ const defaultState = {
     password: "",
   },
   errorMessage: "",
+  role: "user",
 };
-export const useLoginStore = defineStore("login", () => {
-  const { $axios } = useNuxtApp();
-  const state = reactive<LoginState>({
-    ..._.cloneDeep(defaultState),
-  });
+export const useLoginStore = defineStore(
+  "login",
+  () => {
+    const { $axios } = useNuxtApp();
+    const state = reactive<LoginState>({
+      ..._.cloneDeep(defaultState),
+    });
 
-  const rules = {
-    email: {
-      required: helpers.withMessage(
-        "Email is required, please enter",
-        required
-      ),
-      emailRegex: helpers.withMessage("Wrong Email format", emailValidate),
-    },
-    password: {
-      required: helpers.withMessage(
-        "Pasword is required, please enter",
-        required
-      ),
-    },
-  };
+    const rules = {
+      email: {
+        required: helpers.withMessage(
+          "Email is required, please enter",
+          required
+        ),
+        emailRegex: helpers.withMessage("Wrong Email format", emailValidate),
+      },
+      password: {
+        required: helpers.withMessage(
+          "Pasword is required, please enter",
+          required
+        ),
+      },
+    };
 
-  const { checkField, $v, checkAllField, isValidForm } = useValidate(
-    rules,
-    state
-  );
+    const { checkField, $v, checkAllField, isValidForm } = useValidate(
+      rules,
+      state
+    );
 
-  const onLogin = async () => {
-    try {
-      const payload = {
-        email: state.email,
-        password: state.password,
-      };
-      const { data } = await $axios.post("/login", payload);
-      console.log(data);
-      if (data) {
-        localStorage.setItem("token", data.accessToken);
-        localStorage.setItem("refresh", data.refreshToken);
+    const onLogin = async () => {
+      try {
+        const payload = {
+          email: state.email,
+          password: state.password,
+        };
+        const { data } = await $axios.post("/login", payload);
+        console.log(data);
+        if (data) {
+          localStorage.setItem("token", data.accessToken);
+          localStorage.setItem("refresh", data.refreshToken);
+          state.role = data.role;
+        }
+      } catch (error) {
+        console.log(error);
       }
-    } catch (error) {
-      console.log(error);
-    }
-  };
+    };
 
-  const getUser = async () => {
-    try {
-      const data = await $axios.get("/user");
-      console.log("data get user store", data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+    const getUser = async () => {
+      try {
+        const data = await $axios.get("/user");
+        console.log("data get user store", data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
 
-  const resetStateToDefault = () => {
-    Object.assign(state, _.cloneDeep(defaultState));
-  };
-  return {
-    state,
-    onLogin,
-    getUser,
-    checkField,
-    $v,
-    checkAllField,
-    isValidForm,
-    resetStateToDefault,
-  };
-});
+    const resetStateToDefault = () => {
+      Object.assign(state, _.cloneDeep(defaultState));
+    };
+    return {
+      state,
+      onLogin,
+      getUser,
+      checkField,
+      $v,
+      checkAllField,
+      isValidForm,
+      resetStateToDefault,
+    };
+  },
+  {
+    persist: {
+      key: "user-role",
+      paths: ["state.role"],
+      storage: persistedState.sessionStorage,
+    },
+  }
+);
 
 export default useLoginStore;
 

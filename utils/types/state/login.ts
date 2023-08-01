@@ -7,4 +7,5 @@ export type LoginState = {
     password: string;
   };
   errorMessage: string;
+  role: string;
 };

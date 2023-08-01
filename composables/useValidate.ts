@@ -38,6 +38,5 @@ export const useValidate = (rules: any, state: any) => {
       isValidForm.value = !$v.value.$invalid;
     }
   );
-  console.log($v);
   return { checkField, checkAllField, $v, isValidForm };
 };
