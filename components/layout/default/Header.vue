@@ -7,15 +7,31 @@
       class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4"
     >
       <div class="flex items-center">
-        <img src="~/image/logo.png" class="h-8 mr-3" alt="ZoeCloset Logo" />
+        <img
+          src="/image/logo.png"
+          class="h-8 mr-3 w-[50px] h-[50px]"
+          alt="ZoeCloset Logo"
+        />
+        <span class="text-[#ab732a] text-[26px] font-medium">Zoe Closet</span>
       </div>
       <div class="flex md:order-2">
         <button
+          v-if="!loginStore.state.isLogin"
           type="button"
           class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center mr-3 md:mr-0 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+          @click="navigateTo('/login')"
         >
-          Get started
+          Login
         </button>
+        <div v-else>
+          <button
+            type="button"
+            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center mr-3 md:mr-0 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+          >
+            Log out
+          </button>
+        </div>
+
         <button
           data-collapse-toggle="navbar-sticky"
           type="button"
@@ -83,4 +99,6 @@
   </nav>
 </template>
 
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+const loginStore = useLoginStore();
+</script>

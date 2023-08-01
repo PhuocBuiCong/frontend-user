@@ -7,14 +7,11 @@
 </template>
 
 <script lang="ts" setup>
-import {  DefaultHeader } from '~/components/layout/default'
-
+import { DefaultHeader } from "../components/layout/index";
 </script>
-<style lang="scss" scoped>
+<style scoped>
 .body-container {
   min-height: calc(100vh - 252px);
-  @include sp {
-    min-height: -moz-available;
-  }
+  margin-top: 83px;
 }
 </style>

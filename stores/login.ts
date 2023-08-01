@@ -57,27 +57,28 @@ export const useLoginStore = defineStore(
           localStorage.setItem("refresh", data.refreshToken);
           state.role = data.role;
         }
-      } catch (error) {
+      } catch (error: any) {
         console.log(error);
+        state.errorMessage = error.response.data.error;
       }
     };
 
-    const getUser = async () => {
+    const logOut = async () => {
       try {
-        const data = await $axios.get("/user");
-        console.log("data get user store", data);
+        localStorage.removeItem("token");
+        localStorage.removeItem("refresh");
       } catch (error) {
         console.log(error);
       }
     };
-
+    const isLogin = computed(()=> !!)
     const resetStateToDefault = () => {
       Object.assign(state, _.cloneDeep(defaultState));
     };
     return {
       state,
       onLogin,
-      getUser,
+      logOut,
       checkField,
       $v,
       checkAllField,

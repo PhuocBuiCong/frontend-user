@@ -78,7 +78,6 @@ export const useSignupStore = defineStore("signup", () => {
         confirmPassword: state.confirmPassword,
       };
       const { data } = await $axios.post("/signup", payload);
-      console.log(data);
       if (data) {
         alert("Successful account registration");
         navigateTo("/login");

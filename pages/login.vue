@@ -1,6 +1,6 @@
 <!-- components/LogInForm.vue -->
 <template>
-  <div id="app" class="bg-[url('~/image/bg.jpg')] h-screen flex">
+  <div id="app" class="bg-[url('~/image/bg2.jpg')] h-screen flex">
     <div class="w-[420px] m-auto">
       <div
         class="border-t-4 border-blue-600 overflow-hidden rounded shadow-lg bg-white"
@@ -13,6 +13,7 @@
             type="text"
             placeholder="Email Address"
             class="border border-gray rounded w-full p-3"
+            ref="refInput"
             @focusout="loginStore.checkField('email')"
           />
           <p v-if="loginStore.state.hasErrors.email" class="text-red-500">
@@ -52,6 +53,9 @@
             >
           </div>
         </div>
+        <div v-if="loginStore.state.errorMessage" class="text-red-500 px-4">
+          {{ loginStore.state.errorMessage }}
+        </div>
         <div class="px-4 mb-6">
           <button
             class="border w-full px-4 py-3 text-white font-semibold rounded"
@@ -79,14 +83,13 @@
 
 <script lang="ts" setup>
 const loginStore = useLoginStore();
-
+const refInput = ref<null | { focus: () => null }>(null);
 onMounted(() => {
   loginStore.resetStateToDefault();
+  refInput?.value?.focus();
 });
 const handleLogin = () => {
   loginStore.onLogin();
-};
-const onGetUser = async () => {
-  await loginStore.getUser();
+  navigateTo("/");
 };
 </script>

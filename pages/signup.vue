@@ -13,6 +13,7 @@
             type="text"
             placeholder="Email Address"
             class="border border-gray rounded w-full p-3"
+            ref="refInput"
             @focusout="signUpStore.checkField('email')"
           />
           <p v-if="signUpStore.state.hasErrors.email" class="text-red-500">
@@ -81,8 +82,11 @@
 
 <script lang="ts" setup>
 const signUpStore = useSignupStore();
+const refInput = ref<null | { focus: () => null }>(null);
+
 onMounted(() => {
   signUpStore.resetStateToDefault();
+  refInput?.value?.focus();
 });
 const handleSignUp = () => {
   signUpStore.onSignUp();
