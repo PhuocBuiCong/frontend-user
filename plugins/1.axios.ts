@@ -7,6 +7,8 @@ declare module "nuxt/dist/app/nuxt" {
 
 export default defineNuxtPlugin(({ $pinia }) => {
   const runtimeConfig = useRuntimeConfig();
+  const userStore = useUserStore($pinia);
+  userStore.updateToken();
   const instance = axios.create({
     baseURL: runtimeConfig.public.apiBase,
     timeout: Number(runtimeConfig.public.apiTimeout),

@@ -19,6 +19,8 @@ export const useLoginStore = defineStore(
   "login",
   () => {
     const { $axios } = useNuxtApp();
+    const { saveToken } = useUserStore();
+
     const state = reactive<LoginState>({
       ..._.cloneDeep(defaultState),
     });
@@ -56,6 +58,7 @@ export const useLoginStore = defineStore(
           localStorage.setItem("token", data.accessToken);
           localStorage.setItem("refresh", data.refreshToken);
           state.role = data.role;
+          saveToken(data.accessToken);
         }
       } catch (error: any) {
         console.log(error);
@@ -63,22 +66,12 @@ export const useLoginStore = defineStore(
       }
     };
 
-    const logOut = async () => {
-      try {
-        localStorage.removeItem("token");
-        localStorage.removeItem("refresh");
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    const isLogin = computed(()=> !!)
     const resetStateToDefault = () => {
       Object.assign(state, _.cloneDeep(defaultState));
     };
     return {
       state,
       onLogin,
-      logOut,
       checkField,
       $v,
       checkAllField,
