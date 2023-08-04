@@ -3,6 +3,7 @@ import _ from "lodash";
 
 const defaultState = {
   test: "",
+  isOpen: false,
 };
 
 export const useHomeStore = defineStore("home", () => {
