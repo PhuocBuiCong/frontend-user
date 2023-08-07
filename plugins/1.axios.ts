@@ -1,4 +1,6 @@
-import axios, { AxiosHeaders, AxiosInstance } from "axios";
+import { AxiosHeaders, AxiosInstance } from "axios";
+import axios from "axios";
+import { Pinia } from "pinia";
 declare module "nuxt/dist/app/nuxt" {
   interface NuxtApp {
     $axios: AxiosInstance;
@@ -7,7 +9,7 @@ declare module "nuxt/dist/app/nuxt" {
 
 export default defineNuxtPlugin(({ $pinia }) => {
   const runtimeConfig = useRuntimeConfig();
-  const userStore = useUserStore($pinia);
+  const userStore = useUserStore($pinia as Pinia);
   userStore.updateToken();
   const instance = axios.create({
     baseURL: runtimeConfig.public.apiBase,

@@ -56,9 +56,11 @@ export const useLoginStore = defineStore(
         console.log(data);
         if (data) {
           localStorage.setItem("token", data.accessToken);
+          localStorage.setItem("id", data.id);
           localStorage.setItem("refresh", data.refreshToken);
           state.role = data.role;
           saveToken(data.accessToken);
+          navigateTo("/");
         }
       } catch (error: any) {
         console.log(error);

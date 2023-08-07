@@ -13,7 +13,7 @@
         <li class="mt-2 hover:bg-red-50 cursor-pointer">Activity</li>
         <li
           class="my-2 hover:bg-red-50 cursor-pointer"
-          @click="navigateTo('/settings')"
+          @click="handleRedirectSetting"
         >
           Personal Setting
         </li>
@@ -36,6 +36,10 @@ const clickOutsideMenu = () => {
   // console.log("111");
   isOpenMenu.value = false;
   // homeStore.state.isOpen = false;
+};
+const handleRedirectSetting = () => {
+  isOpenMenu.value = false;
+  navigateTo("/settings");
 };
 </script>
 <style scoped>

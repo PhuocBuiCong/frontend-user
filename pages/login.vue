@@ -88,8 +88,7 @@ onMounted(() => {
   loginStore.resetStateToDefault();
   refInput?.value?.focus();
 });
-const handleLogin = () => {
-  loginStore.onLogin();
-  navigateTo("/");
+const handleLogin = async () => {
+  await loginStore.onLogin();
 };
 </script>
