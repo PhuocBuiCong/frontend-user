@@ -5,19 +5,21 @@
     <div class="content w-full px-36 py-10">
       <div class="flex justify-between">
         <div class="text-black font-bold text-[36px]">Edit Profile</div>
-        <div class="container-profilepic rounded-full overflow-hidden relative">
-          <div
-            class="photo-preview w-full h-full bg-[url('~/image/avt1.png')]"
-          ></div>
+        <div
+          class="container-profilepic rounded-full overflow-hidden relative"
+          @click="triggerFileInput"
+        >
+          <img class="photo-preview w-full h-full" :src="state.imageUrl" />
           <div
             class="middle-profilepic absolute inset-0 flex flex-col justify-center items-center hidden"
           >
             <div class="text-profilepic text-success">
               <i class="fas fa-camera"></i>
-              <div class="text-profilepic">Change it</div>
+              <label class="text-profilepic" for="file">Change it</label>
             </div>
           </div>
         </div>
+        <input ref="fileInput" type="file" @change="uploadImage" id="file" />
       </div>
       <div class="flex justify-between mt-3">
         <CInput
@@ -42,20 +44,39 @@
           class="w-full"
         />
       </div>
-
-      <button @click="handleGetUser">test</button>
+      <div
+        class="w-[180px] h-[55px] bg-[#FF7008] text-white font-semibold text-xl rounded-md flex items-center justify-center cursor-pointer mt-4 m-auto"
+        @click="handelSaveProfile"
+      >
+        Save
+      </div>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-const { state, getUser } = useUserStore();
-const handleGetUser = () => {
+const { state, getUser, updateUser } = useUserStore();
+const { readFileData } = useCommon();
+const fileInput = ref();
+onMounted(() => {
   getUser();
+});
+
+const uploadImage = async () => {
+  try {
+    const file = fileInput.value.files[0];
+    console.log(file);
+    state.imageUrl = await readFileData(file);
+  } catch (error) {}
 };
-// onMounted(() => {
-//   getUser();
-// });
+
+const triggerFileInput = () => {
+  fileInput?.value?.click();
+};
+
+const handelSaveProfile = () => {
+  updateUser();
+};
 </script>
 <style scoped>
 .container-profilepic {
@@ -63,9 +84,7 @@ const handleGetUser = () => {
   height: 100px;
 }
 .photo-preview {
-  /* background-image: url(https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80); */
-  background-size: cover;
-  background-position: center;
+  display: block;
 }
 .middle-profilepic {
   background-color: rgba(255, 255, 255, 0.69);
@@ -73,5 +92,8 @@ const handleGetUser = () => {
 .container-profilepic:hover .middle-profilepic {
   display: flex !important;
   cursor: pointer;
+}
+#file {
+  display: none;
 }
 </style>

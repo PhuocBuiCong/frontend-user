@@ -3,4 +3,6 @@ export type UserState = {
   firstName: string;
   lastName: string;
   email: string;
+  imageUrl: string;
+  imagePath: string;
 };

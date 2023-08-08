@@ -7,6 +7,8 @@ const defaultState = {
   firstName: "",
   lastName: "",
   email: "",
+  imageUrl: "/image/avt1.png",
+  imagePath: "",
 };
 
 export const useUserStore = defineStore("user", () => {
@@ -47,12 +49,19 @@ export const useUserStore = defineStore("user", () => {
   };
 
   const getUser = async () => {
+    const userId = localStorage.getItem("id") || "";
     try {
       const payload = {
-        id: "64c87edff34acfad9ce3954b",
+        id: userId,
       };
-      const { data } = await $axios.post("/login", payload);
-      console.log(payload);
+      const { data } = await $axios.post("/user", payload);
+      if (data) {
+        state.id = data.id;
+        state.email = data.email;
+        state.firstName = data.firstName;
+        state.lastName = data.lastName;
+        state.imageUrl = data.imageUrl ?? state.imageUrl;
+      }
     } catch (error: any) {
       console.log(error);
     }
@@ -64,7 +73,7 @@ export const useUserStore = defineStore("user", () => {
         id: state.id,
         firstName: state.firstName,
         lastName: state.lastName,
-        email: state.email,
+        imageUrl: state.imageUrl
       };
       const { data } = await $axios.post("/updateUser", payload);
       if (data) {
