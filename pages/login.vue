@@ -1,6 +1,6 @@
 <!-- components/LogInForm.vue -->
 <template>
-  <div id="app" class="bg-[url('~/image/bg2.jpg')] h-screen flex">
+  <div id="app" class="bg-blue-950 h-screen flex">
     <div class="w-[420px] m-auto">
       <div
         class="border-t-4 border-blue-600 overflow-hidden rounded shadow-lg bg-white"
